@@ -264,6 +264,7 @@ class MainWindow(QMainWindow):
             w = self.msgLay.itemAt(i).widget()
             if w:
                 w.deleteLater()
+        self._typing = None  # 提示气泡可能刚被删掉，引用一并失效
         c = self._conv()
         if not c or not c["messages"]:
             empty = QWidget()
@@ -300,8 +301,8 @@ class MainWindow(QMainWindow):
             self._reload_conv_list()
         c["messages"].append({"role": "user", "kind": "text", "content": text})
         self.input.clear()
-        self._set_pending(True)
         self._reload_messages()
+        self._set_pending(True)
 
         if self.mode == "chat":
             history = [{"role": m["role"], "content": m["content"]}
