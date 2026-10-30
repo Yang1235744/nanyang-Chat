@@ -21,8 +21,20 @@ if BASE not in sys.path:
 APP_DATA = os.path.join(os.environ.get("APPDATA", tempfile.gettempdir()), "nanyang-Chat")
 OUT_DIR = os.path.join(APP_DATA, "outputs")
 MODELS_DIR = os.path.join(APP_DATA, "models")
-for d in (APP_DATA, OUT_DIR, MODELS_DIR):
-    os.makedirs(d, exist_ok=True)
+try:
+    for d in (APP_DATA, OUT_DIR, MODELS_DIR):
+        os.makedirs(d, exist_ok=True)
+    # 验证真的可写（某些沙箱环境 Roaming 不可写）
+    probe = os.path.join(APP_DATA, ".probe")
+    with open(probe, "w") as fh:
+        fh.write("ok")
+    os.remove(probe)
+except OSError:  # 回退到临时目录，功能不受影响
+    APP_DATA = os.path.join(tempfile.gettempdir(), "nanyang-Chat")
+    OUT_DIR = os.path.join(APP_DATA, "outputs")
+    MODELS_DIR = os.path.join(APP_DATA, "models")
+    for d in (APP_DATA, OUT_DIR, MODELS_DIR):
+        os.makedirs(d, exist_ok=True)
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 

@@ -120,8 +120,11 @@ class MainWindow(QMainWindow):
             return []
 
     def _save_convs(self):
-        with open(CONVS_FILE, "w", encoding="utf-8") as f:
-            json.dump(self.convs, f, ensure_ascii=False, indent=1)
+        try:  # 持久化失败（如只读环境）不影响界面流程
+            with open(CONVS_FILE, "w", encoding="utf-8") as f:
+                json.dump(self.convs, f, ensure_ascii=False, indent=1)
+        except OSError:
+            pass
 
     def _conv(self):
         return next((c for c in self.convs if c["id"] == self.current), None)
