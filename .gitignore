@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+runs/
+outputs/
+data/corpus/
+build/
+dist/

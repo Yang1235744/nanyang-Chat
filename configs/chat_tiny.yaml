@@ -1,0 +1,28 @@
+# nanyang-Chat 早期版本 (tiny) —— 从零自研对话大模型
+model_name: nanyang-Chat
+seed: 42
+
+gpt:
+  dim: 384
+  depth: 8
+  heads: 6
+  max_len: 256
+
+train:
+  block_size: 128
+  batch_size: 16
+  lr: 3.0e-4
+  weight_decay: 0.01
+  steps: 5000
+  warmup_steps: 200
+  grad_clip: 1.0
+  log_every: 50
+  save_every: 1000
+  data_dir: data/corpus      # 语料：目录下放 .txt（对话格式：用户：...\n助手：...）
+  out_dir: runs/chat_tiny
+
+gen:
+  max_new_tokens: 200
+  temperature: 0.8
+  top_k: 40
+  history: 5                 # 带进 prompt 的历史轮数

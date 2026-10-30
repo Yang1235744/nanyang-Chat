@@ -1,0 +1,8 @@
+torch>=2.1
+numpy
+pyyaml
+tqdm
+pillow
+imageio
+PySide6
+pyinstaller
